@@ -4,12 +4,14 @@ import org.junit.Test;
 import org.launchcode.techjobs_oo.*;
 import org.junit.Before;
 
+
 public class JobTest {
 
     Job testJob1;
     Job testJob2;
     Job testJob3;
     Job testJob3B;
+    Job testJob3C;
 
     @Before
     public void createJobObject(){
@@ -17,6 +19,7 @@ public class JobTest {
         testJob2 = new Job();
         testJob3 = new Job("Product tester", new Employer("ACME"), new Location("Desert"), new PositionType("Quality control"), new CoreCompetency("Persistence"));
         testJob3B = new Job("Product tester", new Employer("ACME"), new Location("Desert"), new PositionType("Quality control"), new CoreCompetency("Persistence"));
+        testJob3C = new Job("Product tester", new Employer(""), new Location("Desert"), new PositionType("Quality control"), new CoreCompetency("Persistence"));
     }
 
     @Test
@@ -36,5 +39,42 @@ public class JobTest {
     @Test
     public void testJobsForEquality(){
         Assert.assertNotEquals(testJob3,testJob3B);
+    }
+
+
+    String testJob3String;
+    String testJob3CString;
+
+
+    @Before
+    public void createTestJobStrings(){
+        testJob3String = testJob3.toString();
+        testJob3CString = testJob3C.toString();
+    }
+
+    // ****
+    @Test
+    public void testToStringFirstLastLines(){
+        String [] lines = testJob3String.split("\n");
+        String line1 = lines[0];
+        String lastLine = lines[lines.length-1];
+        Assert.assertEquals(" ", line1);
+        Assert.assertEquals(" ", lastLine);
+    }
+
+    @Test
+    public void testToStringContainsFieldLabels(){
+        String expectedString = " \nID: " + testJob3.getId() + "\nName: " + testJob3.getName()
+                +"\nEmployer: " + testJob3.getEmployer() + "\nLocation " + testJob3.getLocation() +
+                "\nPosition Type: " + testJob3.getPositionType() + "\nCore Competency: " + testJob3.getCoreCompetency() + "\n ";
+        Assert.assertEquals(testJob3String,expectedString);
+    }
+
+    @Test
+    public void testToStringNoData(){
+        String expectedString = " \nID: " + testJob3C.getId() + "\nName: " + testJob3C.getName()
+                +"\nEmployer: Data not available" + "\nLocation " + testJob3C.getLocation() +
+                "\nPosition Type: " + testJob3C.getPositionType() + "\nCore Competency: " + testJob3C.getCoreCompetency()+"\n ";
+        Assert.assertEquals(testJob3CString,expectedString);
     }
 }
